@@ -1,12 +1,15 @@
-def generate_5letter_word(seed_value = 10):
-    # This function will return a 5-lette
-    r word from gutenburg corpus, the following section
+# HW1 WORDLE (*** DO NOT DELETE this line or add line before this ***)
+# Only add your code in the provided area.
+# DO NOT delete or modified the given code in main()
+
+def generate_5letter_word(seed_value=10):
+    # This function will return a 5-letter word from gutenburg corpus, the following section
     # we import necessary packages for you.
     import nltk
     nltk.download('gutenberg')
     from nltk.corpus import gutenberg
     import random
-    #random.seed(seed_value)
+    random.seed(seed_value)
     words = list(nltk.Text(gutenberg.words('melville-moby_dick.txt')))
     # Your task
     # - create a list of 5-letter words, change all words into lowercases
@@ -25,6 +28,38 @@ def generate_5letter_word(seed_value = 10):
     indx = random.randint(0, len(lst))
     return (lst[indx])
 
+
+# def check_matched_chars(random_word, guess):
+#     # This function will check if the random word matched with the guessed word as using the following rules:
+#     # if the guessed character matched the random word's character with the same position, mark that guessed character as '@'
+#     # if the guessed character matched the random word's character but with different position, mark that guessed character as '#'
+#     # for examples
+#     # if the random word is 'cried' and the guess word is 'abcde'
+#     # then the return matched_chars will be 'ab###'
+#     # if the random word is 'clock' and the guess word is 'cheer'
+#     # then the return matched_chars will be '@heer'
+#     # if the random word is 'whole' and the guess word is 'wheel'
+#     # then the return matched_chars will be '@@#e#'
+
+#     # *** Enter your code here ***
+#     i = 0
+#     j = 0
+#     # random_word = list("beans")
+#     # guess = list("meatb")
+#     random_word = list(random_word)
+#     guess = list(guess)
+#     while (i < len(random_word)):
+#       while (j < len(guess)):
+#         if (guess[j] == random_word[i]):
+#           if (guess[j] == random_word[j]):
+#             guess[j] = '@'
+#           else:
+#             guess[j] = '#'
+#         j += 1
+#       j = 0
+#       i += 1
+#     guess = ' '.join(guess).replace(" ", "")
+#     return (guess)
 
 
 def check_matched_chars(random_word, guess):
@@ -46,19 +81,26 @@ def check_matched_chars(random_word, guess):
     # guess = list("meatb")
     random_word = list(random_word)
     guess = list(guess)
-    while (i < len(random_word)):
-      while (j < len(guess)):
-        if (guess[j] == random_word[i]):
-          if (guess[j] == random_word[j]):
+    tmp = ''
+    while (i < len(guess)):
+      while (j < len(random_word)):
+        if (random_word[j] == guess[i]):
+          if (random_word[j] == guess[j]):
+            if (guess[i] == tmp):
+              guess[i - 1] = tmp
+            tmp = guess[j]
             guess[j] = '@'
+            random_word[j] = chr(7)
           else:
-            guess[j] = '#'
+            if (guess[i] != tmp):
+              tmp = guess[i]
+              guess[i] = '#'
+              random_word[j] = chr(7)
         j += 1
       j = 0
       i += 1
     guess = ' '.join(guess).replace(" ", "")
     return (guess)
-
 
 
 def show_wordle(wordle, matches):
@@ -109,7 +151,8 @@ def check_win(random_word, guess):
 def main():
     wordle = ''
     # randomly generate a new 5-letter word
-    random_word = generate_5letter_word()
+    #random_word = generate_5letter_word()
+    random_word = 'whole'
     wordle = ''
     matched_chars = ''
     win = False
